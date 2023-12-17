@@ -1,0 +1,18 @@
+.postContainer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 40px;
+
+  margin-top: 20px;
+}
+
+.inputContainer {
+  max-width: 780px;
+
+  background: white;
+
+  margin-top: 20px;
+
+  border-radius: 10px;
+}

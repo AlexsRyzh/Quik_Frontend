@@ -1,0 +1,89 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.innerCotainer {
+  background: white;
+  min-width: 500px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 10px;
+
+  padding: 10px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: right;
+
+  border-bottom: 0.5px solid rgba(43, 70, 105, 0.4);
+
+  padding: 0 10px 10px 10px;
+}
+
+.closeBtn {
+
+  font-size: 30px;
+  border-radius: 4px;
+
+
+  &:hover {
+    cursor: pointer;
+
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.contant {
+  height: 100%;
+
+  padding: 10px;
+
+  flex-grow: 1;
+  align-self: stretch;
+}
+
+.footer {
+  border-top: 0.5px solid rgba(43, 70, 105, 0.4);
+
+  padding: 10px 10px;
+
+  display: flex;
+
+  justify-content: right;
+  gap: 10px;
+
+}
+
+.onCloseBtn {
+  font-size: 16px;
+
+  padding: 10px 20px;
+
+  border-radius: 6px;
+
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.OnSaveBtn {
+  font-size: 16px;
+
+  padding: 10px 20px;
+
+  border-radius: 6px;
+}
+
