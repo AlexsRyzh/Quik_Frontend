@@ -1,41 +1,61 @@
 import Chats from "@/component/(chat)/chats/Chats";
 import ChatsList from "@/component/(chat)/chats-list/ChatsList";
-import img from '@/public/profile-img.png'
+import {useEffect, useState} from "react";
+import $api from "@/http/api.tsx";
 
-const chatList = [
-    {
-        idUser: 1,
-        name: "Piter",
-        img: img,
-        surname: "Jackson",
-        lastMessage: {
-            text: "Горы всегда притягивали людей своей величественностью, красотой и загадочностью. Каждая горная вершина - это уникальный мир",
-            date: new Date()
-        }
-    },
-    {
-        idUser: 2,
-        name: "Piter",
-        img: img,
-        surname: "Jackson",
-        lastMessage: {
-            text: "Горы всегда притягивали людей своей величественностью, красотой и загадочностью. Каждая горная вершина - это уникальный мир",
-            date: new Date()
-        }
-    },
-    {
-        idUser: 3,
-        name: "Piter",
-        img: img,
-        surname: "Jackson",
-        lastMessage: {
-            text: "Горы всегда притягивали людей своей величественностью, красотой и загадочностью. Каждая горная вершина - это уникальный мир",
-            date: new Date()
-        }
-    },
-]
+export interface ChatItem {
+    id: number,
+    idUserTo: number,
+    name: string,
+    imgLink: string,
+    surname: string,
+    lastMessage: {
+        text: string,
+        date: Date
+    }
+}
 
 export default function ChatListPage() {
+
+    const [chatList, setChatList] = useState<ChatItem[]>([])
+    const [refresh, setRefresh] = useState(0)
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        const fetch = async () => {
+            try {
+                const res = await $api.get("/get-my-chat-list")
+
+                let chatListTemp = []
+                for (let chatItem of res.data) {
+                    chatListTemp.push({
+                        id: chatItem.id,
+                        idUserTo: chatItem.idUserTo,
+                        name: chatItem.name,
+                        imgLink: chatItem.imgLink,
+                        surname: chatItem.surname,
+                        lastMessage: {
+                            text: chatItem.lastMessage.text,
+                            date: new Date(chatItem.lastMessage.date)
+                        }
+                    })
+                }
+
+                setChatList(chatListTemp)
+            } catch (e) {
+                console.log(e)
+            }
+            timeout = setTimeout(() => {
+                setRefresh(prev => prev + 1)
+            }, 1000)
+        }
+        fetch()
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [refresh]);
+
+
     return (
         <Chats chatList={chatList}>
             <ChatsList/>

@@ -1,17 +1,6 @@
 import React, {createContext} from "react";
 import styles from './chats.module.scss'
-
-interface ChatItem {
-    idUser: number,
-    name: string,
-    img: any,
-    surname: string,
-    lastMessage: {
-        text: string,
-        date: Date
-    }
-
-}
+import {ChatItem} from "@/src/(content)/chats/page.tsx";
 
 interface ContextType {
     chatList?: ChatItem[]

@@ -1,53 +1,62 @@
 import ChatPage from "@/component/(chat)/chat-page/ChatPage";
-import img from '@/public/profile-img.png'
 import ChatHeader from "@/component/(chat)/chat-header/ChatHeader";
 import ChatMessageList from "@/component/(chat)/chat-message-list/ChatMessageList";
-import PostChatInput from "@/component/(chat)/input-chat-post/PostChatInput.tsx";
+import ChatInput from "@/component/(chat)/input-chat-post/ChatInput.tsx";
 import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import $api from "@/http/api.tsx";
 
-const chatData = {
+interface Message {
+    id: number,
+    text: string,
+    img_link: string,
+    user_id: number,
+    date: Date
+}
+
+export interface ChatData {
     userTo: {
-        name: "Piter",
-        surname: "Jackson",
-        imgLink: img
+        id: number,
+        name: string,
+        surname: string,
+        imgLink: string
     },
-    messages: [
-        {
-            message: "дат, хватает и кидает в жопу Быстрого Гонзалеса.",
-            from: 1,
-            date: new Date(),
-        },
-        {
-            message: "Идет Первая мировая война. На холме со своей свитой стоит царь Николай II и наблюдает за маневрами своих войск. Вдруг возле царя падает снаряд и шипит. Все опешили. Подбегает солдат, хватает и кидает в жопу Быстрого Гонзалеса.",
-            img: img,
-            from: 2,
-            date: new Date(),
-        },
-        {
-            message: "Идет Первая мировая война. На холме со своей свитой стоит царь Николай II и наблюдает за маневрами своих войск. Вдруг возле царя падает снаряд и шипит. Все опешили. Подбегает солдат, хватает и кидает в жопу Быстрого Гонзалеса.",
-            img: img,
-            from: 2,
-            date: new Date(),
-        },
-        {
-            message: "Идет Первая мировая война. На холме со своей свитой стоит царь Николай II и наблюдает за маневрами своих войск. Вдруг возле царя падает снаряд и шипит. Все опешили. Подбегает солдат, хватает и кидает в жопу Быстрого Гонзалеса.",
-            img: img,
-            from: 1,
-            date: new Date(),
-        },
-    ]
+    messages: Message[]
 }
 
 
 export default function Chat() {
+    const {id: chatID} = useParams();
 
-    let {id} = useParams();
+    const [refresh, setRefresh] = useState(0)
+    const [chatInfo, setChatInfo] = useState<ChatData>()
 
+    useEffect(() => {
+        let timeout: any
+
+        const fetch = async () => {
+            try {
+                const res = await $api.get(`/get-chat-info/${chatID}`)
+                setChatInfo(res.data)
+
+            } catch (e) {
+                console.log(e)
+            }
+            timeout = setTimeout(() => setRefresh(prev => prev + 1), 500)
+        }
+        fetch()
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [refresh]);
+
+    console.log(chatInfo)
     return (
-        <ChatPage userTo={id} chatData={chatData}>
+        <ChatPage chatData={chatInfo} chatID={chatID}>
             <ChatHeader/>
             <ChatMessageList/>
-            <PostChatInput/>
+            <ChatInput/>
         </ChatPage>
     )
 }

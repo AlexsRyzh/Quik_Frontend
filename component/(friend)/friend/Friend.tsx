@@ -1,31 +1,25 @@
 import React, {createContext} from "react";
 import styles from './friend-list.module.scss'
-
-interface Friend {
-    img: any,
-    name: string,
-    surname: string,
-    userID: number
-}
+import {FriendInfo} from "@/src/(content)/friends/Friends.tsx";
 
 interface ContextType {
-    friendList?: Friend[]
+    friendsInfo?: FriendInfo
 }
 
 export const FriendListContext = createContext<ContextType>({})
 
 
 interface Props {
-    friendList: Friend[],
+    friendsInfo?: FriendInfo,
     children: React.ReactNode,
 }
 
 export default function Friend(props: Props) {
 
-    const {friendList, children} = props
+    const {friendsInfo, children} = props
 
     return (
-        <FriendListContext.Provider value={{friendList}}>
+        <FriendListContext.Provider value={{friendsInfo}}>
             <div className={styles.container}>
                 {children}
             </div>

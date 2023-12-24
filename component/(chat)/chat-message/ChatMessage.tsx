@@ -5,10 +5,9 @@ import clsx from "clsx";
 
 interface Props {
     message: string,
-    img?: any,
+    img?: string,
     from: number,
     date: Date,
-    my: boolean
 }
 
 export default function ChatMessage(props: Props) {
@@ -16,8 +15,11 @@ export default function ChatMessage(props: Props) {
     const {
         message,
         img,
-        my
+        from
     } = props
+
+
+    const my = localStorage.getItem("user_id") === from.toString()
 
     return (
         <div className={clsx(
@@ -35,7 +37,7 @@ export default function ChatMessage(props: Props) {
                     {message}
                 </pre>
                 {img && (
-                    <img src={img} alt={""} className={styles.img}/>
+                    <img src={img === "" ? "" : `http://localhost:3000/upload/${img}`} alt={""} className={styles.img}/>
                 )}
             </div>
             {my && (

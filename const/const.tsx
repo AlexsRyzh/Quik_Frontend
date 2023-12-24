@@ -7,6 +7,7 @@ export interface User {
     surname?: string,
     amount_posts?: number,
     amount_subscribers?: number,
+    is_friend?: boolean,
     amount_subscribe?: number,
     img_link?: string,
     online?: boolean

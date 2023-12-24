@@ -2,6 +2,7 @@ import {ChatListContext} from "@/component/(chat)/chats/Chats";
 import {useContext} from "react";
 import styles from './chat-list.module.scss'
 import {Link} from "react-router-dom";
+import img from '../../../public/profile-img.png'
 
 export default function ChatsList() {
 
@@ -12,8 +13,8 @@ export default function ChatsList() {
             {chatList?.map((v) => {
 
                 return (
-                    <Link to={`/chats/${v.idUser}`} className={styles.container}>
-                        <img src={v.img} alt={"Фото"} className={styles.img}/>
+                    <Link to={`/chats/${v.id}`} className={styles.container} key={v.id}>
+                        <img src={v.imgLink == "" ? img : v.imgLink} alt={"Фото"} className={styles.img}/>
                         <div className={styles.info}>
                             <div className={styles.dateAndFio}>
                                 <p>{v.name} {v.surname}</p>

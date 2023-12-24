@@ -20,14 +20,20 @@ export default function ProfileInfo(props: Props) {
     const {id} = props
 
     const [user, setUser] = useState<User>({})
+    const my_id = localStorage.getItem("user_id")
 
 
     useEffect(() => {
         const fetch = async () => {
             try {
                 const res = await $api.get(`/users/${id}`)
+                if (id !== my_id) {
+                    const res2 = await $api.get(`/is-friend/${id}`)
+                    setUser({...res.data, is_friend: res2.data['is-friend']})
+                    return
+                }
 
-                setUser(res.data)
+                setUser({...res.data, is_friend: false})
             } catch (e) {
                 console.log(e)
             }
@@ -39,6 +45,31 @@ export default function ProfileInfo(props: Props) {
     const navigate = useNavigate();
 
     const [settingOpen, setSettingOpen] = useState(false)
+
+    const handleToggleFriend = async () => {
+        try {
+            if (!user.is_friend) {
+                await $api.post(`/friends/${id}`)
+            } else {
+                await $api.delete(`/friends/${id}`)
+            }
+
+
+            setUser(prev => ({...prev, is_friend: !prev.is_friend}))
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+    const handleGoToChat = async () => {
+        try {
+            const res = await $api.post(`/chats/${id}`)
+            navigate(`/chats/${res.data}`)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     return (
         <>
@@ -53,27 +84,18 @@ export default function ProfileInfo(props: Props) {
                         </div>
                     </div>
                     <div className={styles.btnContainer}>
-                        {user.id !== Number(id) && (
-                            <Button onClick={() => navigate('/chats/1')}>
+                        {user.id !== Number(my_id) && (
+                            <Button onClick={handleGoToChat}>
                                 Сообщение
                             </Button>
                         )}
-                        {user.id !== Number(id) && (
-                            <Button className={styles.btn}>
-                            <span
-                                className={clsx("material-symbols-rounded", styles.icon)}
-                            >
-                                {true ? "person_remove" : "person_add"}
-                            </span>
-                            </Button>
-                        )}
-                        {user.id === Number(id) && (
-                            <Button className={styles.btn} onClick={() => setSettingOpen(true)}>
-                            <span
-                                className={clsx("material-symbols-rounded", styles.icon)}
-                            >
-                                settings
-                            </span>
+                        {user.id !== Number(my_id) && (
+                            <Button className={styles.btn} onClick={handleToggleFriend}>
+                                <span
+                                    className={clsx("material-symbols-rounded", styles.icon)}
+                                >
+                                    {user.is_friend ? "person_remove" : "person_add"}
+                                </span>
                             </Button>
                         )}
                     </div>

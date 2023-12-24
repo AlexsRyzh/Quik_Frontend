@@ -9,9 +9,10 @@ import {Link} from "react-router-dom";
 export default function MiniProfile() {
 
     const [user, setUser] = useState<User>({})
-    
+    const [refresh, setRefresh] = useState(0)
 
     useEffect(() => {
+        let timeout: any
         const fetch = async () => {
             try {
                 const res = await $api.get(`/users-me`)
@@ -22,9 +23,21 @@ export default function MiniProfile() {
             } catch (e) {
                 console.log(e)
             }
+
+            timeout = setTimeout(() => {
+                if (refresh == 1000) {
+                    setRefresh(0)
+                } else {
+                    setRefresh(prev => prev + 1)
+                }
+            }, 1000)
         }
         fetch()
-    }, []);
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [refresh]);
 
     return (
         <div className={styles.container}>

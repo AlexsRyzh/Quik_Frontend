@@ -12,8 +12,8 @@ import ChatLayout from "@/src/(content)/chats/ChatLayout.tsx";
 import ChatListPage from "@/src/(content)/chats/page.tsx";
 import Chat from "@/src/(content)/chats/[id]/Chat.tsx";
 import AuthContext from "@/contex/auth/AuthContext.tsx";
-import FriendList from "@/component/(friend)/friend-list/FriendList.tsx";
 import ProfilesID from "@/src/(content)/profiles/[id]/page.tsx";
+import Friends from "@/src/(content)/friends/Friends.tsx";
 
 /// http://localhost:3000/
 
@@ -39,7 +39,7 @@ function App() {
                             </Route>
 
 
-                            <Route path={'/friends'} element={<FriendList/>}/>
+                            <Route path={'/friends'} element={<Friends/>}/>
                             <Route path={'/profiles/:id'} element={<ProfilesID/>}/>
                         </Route>
                     </Route>

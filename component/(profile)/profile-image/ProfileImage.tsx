@@ -1,5 +1,4 @@
 import styles from './profile-image.module.scss'
-import clsx from "clsx";
 import img from '@/public/profile-img.png'
 
 interface Props {
@@ -9,17 +8,11 @@ interface Props {
 
 export default function ProfileImage(props: Props) {
 
-    const {src, online} = props
+    const {src} = props
 
     return (
         <div className={styles.container}>
-            <img src={src === "" ? img : src || ""} alt={""} className={styles.img}/>
-            <div className={styles.status}>
-                <div className={clsx(
-                    styles.offline,
-                    online && styles.online,
-                )}></div>
-            </div>
+            <img src={src === "" ? img : src} alt={""} className={styles.img}/>
         </div>
     )
 }
